@@ -115,9 +115,11 @@ for cl in range(len(list)):
             Pmat[pt_no][cluster_no] = f/float(n_feature)
 
 print Pmat
+
 np.savetxt("data/Reduced_feature_matrix.npy",Pmat,delimiter=',')
 np.savetxt("data/lables",lable,delimiter=',')
 
 final_Pmat = np.concatenate((Pmat,lable),axis=1)
-np.savetxt("pmat.csv",final_Pmat,delimiter=' ')
+np.random.shuffle(final_Pmat)
+np.savetxt("data/final_pmat.csv",final_Pmat,delimiter=' ')
 
