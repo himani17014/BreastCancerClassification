@@ -4,6 +4,7 @@ import math
 n_cluster = 6
 n_feature = 30
 n_samples = 569
+
 # data = np.loadtxt("data/data.csv",float,delimiter=',',skiprows=1,usecols=range(2,32))
 # lable = np.loadtxt("data/data.csv",str,delimiter=',',skiprows=1,usecols=(1))
 # lable = lable.reshape((len(lable),1))
@@ -80,6 +81,8 @@ print len(list)
 min_feature_val = np.zeros((n_cluster,n_feature),dtype=float)
 max_feature_val = np.zeros((n_cluster,n_feature),dtype=float)
 
+
+# Reducing features from 30 to 6
 for cluster_no in range(len(list)):
     for j in range(list[cluster_no].shape[1]):
         col = list[cluster_no][:,j]
@@ -112,18 +115,9 @@ for cl in range(len(list)):
             Pmat[pt_no][cluster_no] = f/float(n_feature)
 
 print Pmat
+np.savetxt("data/Reduced_feature_matrix.npy",Pmat,delimiter=',')
+np.savetxt("data/lables",lable,delimiter=',')
 
-from sklearn.model_selection import train_test_split
-from sklearn.svm import SVC
-from sklearn.metrics import accuracy_score
+final_Pmat = np.concatenate((Pmat,lable),axis=1)
+np.savetxt("pmat.csv",final_Pmat,delimiter=' ')
 
-trainX,testX,trainY,testY = train_test_split(Pmat,lable,test_size=0.20,random_state=42)
-
-# print testX
-# testX_list = []
-
-clf = SVC(kernel='rbf')
-clf.fit(trainX,trainY)
-predY = clf.predict(testX)
-
-print accuracy_score(testY,predY)
